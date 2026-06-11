@@ -15,6 +15,10 @@
 **
 
 # Re-allow paths the dogfood Dockerfile.base files consume.
+!Dockerfile
+!ZEABUR.md
+!scripts
+!scripts/zeabur-entrypoint.sh
 !dogfood
 !dogfood/coder
 !dogfood/coder/ubuntu-22.04
