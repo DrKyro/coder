@@ -21,6 +21,10 @@ to Coder's `CODER_HTTP_ADDRESS`.
    CODER_PG_CONNECTION_URL=${POSTGRES_CONNECTION_STRING}
    ```
 
+   The entrypoint automatically appends `sslmode=disable` when the PostgreSQL
+   URL does not already include an `sslmode` parameter. This matches Zeabur's
+   internal PostgreSQL service.
+
 1. Bind a domain to the Coder service. The entrypoint uses Zeabur's
    `${ZEABUR_WEB_URL}` as `CODER_ACCESS_URL` when you do not set
    `CODER_ACCESS_URL` yourself.
@@ -33,7 +37,7 @@ Set these on the Coder service when you need explicit control:
 ```env
 CODER_ACCESS_URL=https://coder.example.com
 CODER_WILDCARD_ACCESS_URL=*.coder.example.com
-CODER_PG_CONNECTION_URL=${POSTGRES_URI}
+CODER_PG_CONNECTION_URL=${POSTGRES_URI}?sslmode=disable
 ```
 
 ## Notes

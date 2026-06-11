@@ -9,6 +9,10 @@ fi
 if [ -z "${CODER_ACCESS_URL:-}" ]; then
 	if [ -n "${ZEABUR_WEB_URL:-}" ]; then
 		export CODER_ACCESS_URL="${ZEABUR_WEB_URL%/}"
+	elif [ -n "${ZEABUR_PUBLIC_DOMAIN:-}" ]; then
+		export CODER_ACCESS_URL="https://${ZEABUR_PUBLIC_DOMAIN}"
+	elif [ -n "${ZEABUR_DOMAIN:-}" ]; then
+		export CODER_ACCESS_URL="https://${ZEABUR_DOMAIN}"
 	elif [ -n "${ZEABUR_WEB_DOMAIN:-}" ]; then
 		export CODER_ACCESS_URL="https://${ZEABUR_WEB_DOMAIN}"
 	fi
@@ -28,6 +32,14 @@ if [ -z "${CODER_PG_CONNECTION_URL:-}" ]; then
 	elif [ -n "${DATABASE_URL:-}" ]; then
 		export CODER_PG_CONNECTION_URL="${DATABASE_URL}"
 	fi
+fi
+
+if [ -n "${CODER_PG_CONNECTION_URL:-}" ]; then
+	case "${CODER_PG_CONNECTION_URL}" in
+		*sslmode=*) ;;
+		*\?*) export CODER_PG_CONNECTION_URL="${CODER_PG_CONNECTION_URL}&sslmode=disable" ;;
+		*) export CODER_PG_CONNECTION_URL="${CODER_PG_CONNECTION_URL}?sslmode=disable" ;;
+	esac
 fi
 
 exec /opt/coder server "$@"
