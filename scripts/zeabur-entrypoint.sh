@@ -18,20 +18,19 @@ if [ -z "${CODER_ACCESS_URL:-}" ]; then
 	fi
 fi
 
-if [ -z "${CODER_PG_CONNECTION_URL:-}" ]; then
-	if [ -n "${POSTGRES_URI:-}" ]; then
-		export CODER_PG_CONNECTION_URL="${POSTGRES_URI}"
-	elif [ -n "${POSTGRES_CONNECTION_STRING:-}" ]; then
-		export CODER_PG_CONNECTION_URL="${POSTGRES_CONNECTION_STRING}"
-	elif [ -n "${POSTGRESQL_CONNECTION_STRING:-}" ]; then
-		export CODER_PG_CONNECTION_URL="${POSTGRESQL_CONNECTION_STRING}"
-	elif [ -n "${POSTGRES_URL:-}" ]; then
-		export CODER_PG_CONNECTION_URL="${POSTGRES_URL}"
-	elif [ -n "${POSTGRESQL_URL:-}" ]; then
-		export CODER_PG_CONNECTION_URL="${POSTGRESQL_URL}"
-	elif [ -n "${DATABASE_URL:-}" ]; then
-		export CODER_PG_CONNECTION_URL="${DATABASE_URL}"
-	fi
+# Prefer Zeabur's generated PostgreSQL URL when it is present.
+if [ -n "${POSTGRES_URI:-}" ]; then
+	export CODER_PG_CONNECTION_URL="${POSTGRES_URI}"
+elif [ -n "${POSTGRES_CONNECTION_STRING:-}" ]; then
+	export CODER_PG_CONNECTION_URL="${POSTGRES_CONNECTION_STRING}"
+elif [ -n "${POSTGRESQL_CONNECTION_STRING:-}" ]; then
+	export CODER_PG_CONNECTION_URL="${POSTGRESQL_CONNECTION_STRING}"
+elif [ -n "${POSTGRES_URL:-}" ]; then
+	export CODER_PG_CONNECTION_URL="${POSTGRES_URL}"
+elif [ -n "${POSTGRESQL_URL:-}" ]; then
+	export CODER_PG_CONNECTION_URL="${POSTGRESQL_URL}"
+elif [ -n "${DATABASE_URL:-}" ]; then
+	export CODER_PG_CONNECTION_URL="${DATABASE_URL}"
 fi
 
 if [ -n "${CODER_PG_CONNECTION_URL:-}" ]; then

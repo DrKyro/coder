@@ -8,23 +8,9 @@ to Coder's `CODER_HTTP_ADDRESS`.
 
 1. In Zeabur, create a project and add a PostgreSQL service.
 1. Add this repository as a GitHub service.
-1. Set the Coder service environment variable:
-
-   ```env
-   CODER_PG_CONNECTION_URL=${POSTGRES_URI}
-   ```
-
-   If your PostgreSQL service exposes `POSTGRES_CONNECTION_STRING` instead,
-   use:
-
-   ```env
-   CODER_PG_CONNECTION_URL=${POSTGRES_CONNECTION_STRING}
-   ```
-
-   The entrypoint automatically appends `sslmode=disable` when the PostgreSQL
-   URL does not already include an `sslmode` parameter. This matches Zeabur's
-   internal PostgreSQL service.
-
+1. Integrate the PostgreSQL service with the Coder service so Zeabur injects
+   its generated `POSTGRES_URI` variable. The entrypoint uses `POSTGRES_URI`
+   directly and maps it to `CODER_PG_CONNECTION_URL`.
 1. Bind a domain to the Coder service. The entrypoint uses Zeabur's
    `${ZEABUR_WEB_URL}` as `CODER_ACCESS_URL` when you do not set
    `CODER_ACCESS_URL` yourself.
@@ -37,8 +23,11 @@ Set these on the Coder service when you need explicit control:
 ```env
 CODER_ACCESS_URL=https://coder.example.com
 CODER_WILDCARD_ACCESS_URL=*.coder.example.com
-CODER_PG_CONNECTION_URL=${POSTGRES_URI}?sslmode=disable
 ```
+
+The entrypoint automatically appends `sslmode=disable` when the PostgreSQL URL
+does not already include an `sslmode` parameter. This matches Zeabur's internal
+PostgreSQL service.
 
 ## Notes
 
